@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
     ObjectId = mongoose.Types.ObjectId;
 
 exports.createTodo = function(req, res, next){
+    console.log(req.body);
 	var TodoModel = new Todo(JSON.parse( req.body));
     TodoModel.save(function(err, User) {
         if (err) {

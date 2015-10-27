@@ -1,6 +1,7 @@
 
-var restify = require('restify'),
-fs = require('fs');
+var restify = require('restify')
+,config = require('../config.js').app
+,fs = require('fs');
 
 var controllers = {}, 
 controllers_path = process.cwd() + '/serverapp/controllers';
@@ -20,9 +21,14 @@ var server = restify.createServer({
 
 
 server
-    .use(restify.fullResponse())
+    .use(restify.acceptParser(server.acceptable))
+    .use(restify.queryParser())
+    .use(restify.dateParser(60))
+    .use(restify.CORS())
     .use(restify.bodyParser());
 
+if(config.SERVE_STATIC_CONTENT)
+    require('./staticContentServer.js')(server);
 
 function send(req, res, next) {
 	res.send('hello ' + req.params.name);
@@ -44,8 +50,13 @@ server.del('hello/:name', function rm(req, res, next) {
 server.get('/todo', controllers.todo.getTodos);
 server.post('/todo', controllers.todo.createTodo);
 
+server.on('InternalServer', function (req, res, err, cb) {
+  err.body = 'something is wrong!';
+  return cb();
+});
 
-var port = process.env.PORT || 8080;
+
+var port = config.PORT || 8080;
 server.listen(port, function (err) {
     if (err)
         console.error(err)

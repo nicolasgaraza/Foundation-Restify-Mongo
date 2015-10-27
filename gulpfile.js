@@ -11,6 +11,7 @@ var gulp     = require('gulp');
 var rimraf   = require('rimraf');
 var router   = require('front-router');
 var sequence = require('run-sequence');
+var replace  = require('gulp-replace');
 var exec     = require('child_process').exec;
 
 
@@ -169,6 +170,7 @@ var uglify = $.if(isProduction, $.uglify()
   return gulp.src(paths.srvJS)
     .pipe(uglify)
     .pipe($.concat('services.js'))
+    .pipe(replace('{{ServerUrl}}', 'http://localhost:8080'))
     .pipe(gulp.dest('./ClientApp/build/assets/js/'))
   ;
 });

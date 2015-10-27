@@ -2,9 +2,9 @@
 var mongoose = require('mongoose')
     , fs = require('fs')
     , models_path = process.cwd() + '/ServerApp/models'
-    , config = require('../config.js');
+    , config = require('../config.js').app;
 
-mongoose.connect(config.db.MONGO_URL, {server:{auto_reconnect:true}});
+mongoose.connect(config.MONGO_URL, {server:{auto_reconnect:true}});
 var db = mongoose.connection;
 
 db.on('error', function (err) {
@@ -15,7 +15,7 @@ db.once('open', function callback() {
 });
 db.on('disconnected', function() {
     console.error('MongoDB disconnected!');
-    mongoose.connect(config.db.MONGO_URL, {server:{auto_reconnect:true}});
+    mongoose.connect(config.MONGO_URL, {server:{auto_reconnect:true}});
 });
 db.on('reconnected', function () {
     console.info('MongoDB reconnected!');

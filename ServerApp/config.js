@@ -1,3 +1,5 @@
-exports.db = {
-	MONGO_URL : "mongodb://localhost/myappdatabase"
-};;
+exports.app = {
+	MONGO_URL : "mongodb://localhost/myappdatabase",
+	PORT : 8080,
+	SERVE_STATIC_CONTENT: true
+};
