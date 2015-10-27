@@ -54,9 +54,17 @@ To run the compiling process once, without watching any files, use the `build` c
 ```bash
 npm start build
 ```
+## TODO
+
+Add more example for the TODO app (client and server)
+Add Unit test framework support
+Add OAuth2 security
+
 
 ## Special Thanks
 
 Special thanks to the foundation app creator located at http://foundation.zurb.com/apps/docs/#!/installation this template was created usinging it as a base
 
 Thanks!!!
+
+
