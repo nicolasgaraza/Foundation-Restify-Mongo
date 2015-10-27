@@ -11,7 +11,8 @@ var gulp     = require('gulp');
 var rimraf   = require('rimraf');
 var router   = require('front-router');
 var sequence = require('run-sequence');
-var exec = require('child_process').exec;
+var exec     = require('child_process').exec;
+
 
 // Check for --production flag
 var isProduction = !!(argv.production);
@@ -45,7 +46,13 @@ var paths = {
   ],
   // These files are for your app's JavaScript
   appJS: [
-    'ClientApp/client/assets/js/app.js'
+    'ClientApp/client/assets/js/app.js',
+  ],
+  ctrJS : [
+    'ClientApp/client/assets/js/controllers/*.js',
+  ],
+  srvJS : [
+    'ClientApp/client/assets/js/services/*.js',
   ]
 }
 
@@ -114,7 +121,7 @@ gulp.task('sass', function () {
 });
 
 // Compiles and copies the Foundation for Apps JavaScript, as well as your app's custom JS
-gulp.task('uglify', ['uglify:foundation', 'uglify:app'])
+gulp.task('uglify', ['uglify:foundation', 'uglify:app', 'uglify:controllers', 'uglify:services'])
 
 gulp.task('uglify:foundation', function(cb) {
   var uglify = $.if(isProduction, $.uglify()
@@ -129,15 +136,39 @@ gulp.task('uglify:foundation', function(cb) {
   ;
 });
 
-gulp.task('uglify:app', function() {
-  var uglify = $.if(isProduction, $.uglify()
-    .on('error', function (e) {
-      console.log(e);
-    }));
 
+gulp.task('uglify:app', function() {
+var uglify = $.if(isProduction, $.uglify()
+  .on('error', function (e) {
+    console.log(e);
+  }));
   return gulp.src(paths.appJS)
     .pipe(uglify)
     .pipe($.concat('app.js'))
+    .pipe(gulp.dest('./ClientApp/build/assets/js/'))
+  ;
+});
+
+gulp.task('uglify:controllers', function() {
+var uglify = $.if(isProduction, $.uglify()
+  .on('error', function (e) {
+    console.log(e);
+  }));
+  return gulp.src(paths.ctrJS)
+    .pipe(uglify)
+    .pipe($.concat('controllers.js'))
+    .pipe(gulp.dest('./ClientApp/build/assets/js/'))
+  ;
+});
+
+gulp.task('uglify:services', function() {
+var uglify = $.if(isProduction, $.uglify()
+  .on('error', function (e) {
+    console.log(e);
+  }));
+  return gulp.src(paths.srvJS)
+    .pipe(uglify)
+    .pipe($.concat('services.js'))
     .pipe(gulp.dest('./ClientApp/build/assets/js/'))
   ;
 });
@@ -151,13 +182,29 @@ gulp.task('server', ['build'], function() {
       fallback: 'index.html',
       livereload: true,
       open: true
-    }))
-  ;
-  exec('node ServerApp/server.js', function (err, stdout, stderr) {
+    }));
+  exec('nodemon ServerApp/server.js', function (err, stdout, stderr) {
+    console.log('Started Server App');
     console.log(stdout);
     console.log(stderr);
   });
+ /* exec('C:/mongodb-win32-x86_64-3.0.3/bin/mongod.exe', function (err, stdout, stderr) {
+    console.log('Started MongoDB server');
+    console.log(stdout);
+    console.log(stderr);
+  });*/
+});
 
+// Starts a test server, which you can view at http://localhost:8079
+gulp.task('serverClient', ['build'], function() {
+  gulp.src('./ClientApp/build')
+    .pipe($.webserver({
+      port: 8079,
+      host: 'localhost',
+      fallback: 'index.html',
+      livereload: true,
+      open: true
+    }));
 });
 
 // Builds your entire app once, without starting a server
@@ -172,6 +219,10 @@ gulp.task('default', ['server'], function () {
 
   // Watch JavaScript
   gulp.watch(['./ClientApp/client/assets/js/**/*', './js/**/*'], ['uglify:app']);
+  
+  gulp.watch(['./ClientApp/client/assets/js/**/*', './js/controllers/**/*'], ['uglify:controllers']);
+
+  gulp.watch(['./ClientApp/client/assets/js/**/*', './js/services/**/*'], ['uglify:services']);
 
   // Watch static files
   gulp.watch(['./ClientApp/client/**/*.*', '!./client/templates/**/*.*', '!./ClientApp/client/assets/{scss,js}/**/*.*'], ['copy']);

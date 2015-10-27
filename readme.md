@@ -1,4 +1,4 @@
-# Foundation and Restify Template for Web Applications
+ # Foundation and Restify Template for Web Applications
 
 
 
@@ -10,6 +10,8 @@ You'll need the following software installed to get started.
 
   - [Chocolatey](https://chocolatey.org): As a dependecy installer for Windows
   - [Node.js](http://nodejs.org): Use the installer for your OS.
+  - [Nodemon](http://nodemon.io/): Use `npm install -g nodemon`
+  - [MongoDB](https://www.mongodb.org/): You can use the oficial installer or use choco to install it using the command Use `choco install mongodb`
   - [Git](http://git-scm.com/downloads): Use the installer for your OS.
     - Windows users can also try [Git for Windows](http://git-for-windows.github.io/).
   - [Gulp](http://gulpjs.com/) and [Bower](http://bower.io): Run `npm install -g gulp bower`
@@ -34,6 +36,7 @@ Install the dependencies. If you're running Mac OS or Linux, you may need to run
 
 ```bash
 npm install
+bower install
 ```
 
 While you're working on your project, run:

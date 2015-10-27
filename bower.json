@@ -13,8 +13,6 @@
     "apps"
   ],
   "license": "MIT",
-  //"homepage": "http://foundation.zurb.com",
-  //"private": true,
   "ignore": [
     "**/.*",
     "node_modules",
