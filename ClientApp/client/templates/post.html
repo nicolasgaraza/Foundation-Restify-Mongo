@@ -1,0 +1,25 @@
+---
+name: post
+url: /todo
+controller: CreateTodoController
+---
+
+<div ng-controller="CreateTodoController" class="grid-container">
+	<h1>{{title}}</h1>
+
+	<form>
+		<label>
+			Title
+			<input type="text" ng-model="todo.name" placeholder="Your's Todo Title">
+		</label>
+		<div class="grid-block">
+			<div class="small-12 medium-6 grid-content">
+				<label>
+					Description
+					<textarea ng-model="todo.desc" maxlength="250" placeholder="Your's Todo Description"></textarea>
+				</label>
+			</div>
+		</div>
+		<a class="button" href="#">Create</a>
+	</form>
+</div>

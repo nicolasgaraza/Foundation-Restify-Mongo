@@ -185,16 +185,17 @@ gulp.task('server', ['build'], function() {
       livereload: true,
       open: true
     }));
+  /*exec('C:/mongodb-win32-x86_64-3.0.3/bin/mongod.exe', function (err, stdout, stderr) {
+    console.log('Started MongoDB server');
+    console.log(stdout);
+    console.log(stderr);
+  });*/
   exec('nodemon ServerApp/server.js', function (err, stdout, stderr) {
     console.log('Started Server App');
     console.log(stdout);
     console.log(stderr);
   });
- /* exec('C:/mongodb-win32-x86_64-3.0.3/bin/mongod.exe', function (err, stdout, stderr) {
-    console.log('Started MongoDB server');
-    console.log(stdout);
-    console.log(stderr);
-  });*/
+  
 });
 
 // Starts a test server, which you can view at http://localhost:8079
